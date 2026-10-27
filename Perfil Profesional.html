@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<!-- 1. DOCUMENTO: "html" con lang="es" le dice al navegador que el contenido está en español -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport: hace que la página se vea bien en celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>D’Alessandro Bazan H. | Perfil profesional</title>
+  <meta name="description" content="Estudiante de Derecho especializado en Derecho Ambiental, Minero y Energético.">
+
+  <style>
+    /* 2. VARIABLES: los colores se definen una sola vez y se reutilizan con var(--nombre).
+          Si quieres cambiar el color de toda la página, cambias solo estas líneas. */
+    :root {
+      --bosque: #17352b;      /* verde oscuro, igual que tu CV */
+      --musgo:  #3f6b57;      /* verde medio para detalles */
+      --menta:  #9cc9b0;      /* verde claro: se usa sobre fondos verde oscuro */
+      --fondo:  #edf2ee;
+      --papel:  #ffffff;
+      --texto:  #1d2622;
+      --suave:  #5a655f;
+      --linea:  #d9dfd9;
+      --bosque-fijo:#17352b;  /* verde bosque que NO cambia con el modo oscuro: se usa en fondos */
+    }
+    /* Modo oscuro automático si el dispositivo lo usa */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bosque:#cfe3d8; --musgo:#8fb8a2; --menta:#9cc9b0;
+        --fondo:#0f1613; --papel:#16201b; --texto:#e6ece8;
+        --suave:#9aa9a1; --linea:#2a3830; --bosque-fijo:#2a5643;
+      }
+    }
+
+    /* 3. BASE: reglas generales para toda la página */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--fondo);
+      color: var(--texto);
+      font: 1rem/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.2; }
+    a { color: var(--musgo); }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--musgo); outline-offset: 2px; }
+    .contenedor { max-width: 860px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* 4. ENCABEZADO (hero): franja verde con el nombre.
+          Las "capas" de abajo (degradado con franjas) representan estratos del suelo. */
+    header.hero {
+      background: var(--bosque);
+      color: #f3f6f2;
+      padding: 3.5rem 0 3rem;
+      border-bottom: 14px solid transparent;
+      border-image: linear-gradient(90deg,
+        #3f6b57 0 35%, #5f8f78 35% 60%, #8fb8a2 60% 80%, #cfe3d8 80% 100%) 1;
+    }
+    @media (prefers-color-scheme: dark) { header.hero { background:#0a110e; color:#e6ece8; } }
+    .hero h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); margin: 0 0 .4rem; letter-spacing: -.01em; }
+    /* Foto: el contenedor usa flexbox para poner el texto a la izquierda y la foto a la derecha */
+    .hero-grid { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+    .hero-texto { flex: 1; min-width: 0; }
+    .foto { width: 190px; height: auto; flex-shrink: 0; border-radius: 10px;
+            border: 4px solid var(--menta); background: #fff; }
+    @media (max-width: 640px) {      /* en celular: la foto pasa arriba y el texto abajo */
+      .hero-grid { flex-direction: column-reverse; align-items: flex-start; }
+      .foto { width: 150px; }
+    }
+    .hero .rol { font-size: 1.1rem; margin: 0 0 1.2rem; opacity: .92; }
+    .hero .resumen { max-width: 62ch; margin: 0 0 1.5rem; opacity: .95; }
+    .contacto { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; padding: 0; list-style: none; margin: 0 0 1.25rem; }
+    .contacto a { color: inherit; }
+    .btn {
+      font: inherit; cursor: pointer; padding: .55rem 1rem; border-radius: 6px;
+      background: var(--menta); color: #10261d; border: 0; font-weight: 600;
+    }
+
+    /* 5. NAVEGACIÓN: barra que se queda fija arriba (position: sticky) */
+    nav.menu { position: sticky; top: 0; z-index: 5; background: var(--bosque-fijo); }
+    nav.menu ul { display: flex; gap: 1.25rem; list-style: none; margin: 0; padding: .75rem 1.25rem;
+                  overflow-x: auto; max-width: 860px; margin-inline: auto; white-space: nowrap; }
+    nav.menu a { text-decoration: none; font-weight: 600; color: #e8efe9; }
+    nav.menu a:hover { color: var(--menta); }
+
+    /* 6. SECCIONES */
+    section { padding: 2.5rem 0 .5rem; scroll-margin-top: 3.5rem; }
+    section h2 { font-size: 1.6rem; margin: 0 0 1.25rem; color: #f3f6f2; background: var(--bosque-fijo);
+                 padding: .55rem 1rem; border-radius: 4px; }
+    ul.lista { padding-left: 1.2rem; margin: .5rem 0; }
+    ul.lista li { margin-bottom: .45rem; }
+
+    /* Línea de tiempo: aquí SÍ hay orden cronológico, por eso usa lista ordenada (<ol>) */
+    ol.tiempo { list-style: none; margin: 0; padding: 0 0 0 1.25rem; border-left: 3px solid var(--bosque-fijo); }
+    ol.tiempo > li { position: relative; margin-bottom: 1.75rem; }
+    ol.tiempo > li::before { content: ""; position: absolute; left: -1.75rem; top: .45rem;
+                             width: 12px; height: 12px; border-radius: 50%; background: var(--musgo); }
+    .puesto { margin: 0; font-size: 1.15rem; color: var(--bosque); }
+    .lugar  { margin: 0; color: var(--suave); }
+    .fecha  { font-size: .9rem; color: var(--suave); }
+
+    /* Publicaciones */
+    .pub { background: var(--papel); border: 1px solid var(--linea); border-left: 6px solid var(--bosque-fijo);
+           padding: 1rem 1.25rem; margin-bottom: 1rem; border-radius: 4px; }
+    .pub h3 { margin: 0 0 .35rem; font-size: 1.05rem; color: var(--bosque); }
+    .pub p  { margin: .3rem 0 0; }
+    .estado { display: inline-block; font-size: .8rem; font-weight: 700; padding: .1rem .55rem;
+              border-radius: 99px; margin-bottom: .4rem; }
+    .publicado { background: #dcebe2; color: #17352b; }
+    .proceso   { background: transparent; color: var(--musgo); border: 1px dashed var(--musgo); }
+
+    /* Competencias en cuadrícula adaptable */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+    .grid article { background: var(--papel); border: 1px solid var(--linea); border-top: 5px solid var(--bosque-fijo); padding: 1rem 1.1rem; border-radius: 4px; }
+    .grid h3 { margin: 0 0 .3rem; font-size: 1rem; color: var(--bosque); }
+    .grid p { margin: 0; font-size: .95rem; }
+
+    footer { margin-top: 3rem; padding: 1.5rem 0; background: var(--bosque-fijo);
+             color: #dfe8e1; font-size: .9rem; text-align: center; }
+
+    /* 7. IMPRESIÓN: al imprimir/guardar PDF se oculta el menú y el botón */
+    @media print {
+      nav.menu, .btn { display: none; }
+      header.hero { background: none; color: #000; border-image: none; border-bottom: 2px solid #000; padding: 1rem 0; }
+      body { background: #fff; color: #000; }
+      section { break-inside: avoid; }
+      section h2 { background: none; color: #000; border-bottom: 2px solid #000; padding-left: 0; }
+      footer { background: none; color: #000; }
+    }
+    /* Respeta a quienes desactivan animaciones en su sistema */
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+
+<body>
+  <!-- 8. HEADER: bloque de presentación -->
+  <header class="hero">
+    <div class="contenedor hero-grid">
+      <div class="hero-texto">
+      <h1>D’Alessandro Bazan H.</h1>
+      <p class="rol">Estudiante de Derecho: Derecho Ambiental, Minero y Energético, y análisis regulatorio</p>
+      <p class="resumen">
+        Estudiante de décimo ciclo de la Universidad Científica del Sur, con experiencia en investigación
+        jurídica, análisis normativo, informes técnico-legales y publicaciones académicas. Trabajo
+        actualmente en permisología ambiental y en la revisión de Instrumentos de Gestión Ambiental (IGA)
+        del sector minero-energético.
+      </p>
+      <ul class="contacto">
+        <li><a href="mailto:bazanh.dalessandro@gmail.com">bazanh.dalessandro@gmail.com</a></li>
+        <li><a href="tel:+51922069313">+51 922 069 313</a></li>
+        <li>Lima, Perú</li>
+        <li><a href="https://bit.ly/DAlessandroBazanH" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+      <!-- onclick ejecuta una función de JavaScript ya incluida en el navegador -->
+      <button class="btn" onclick="window.print()">Imprimir o guardar en PDF</button>
+      </div>
+      <!-- La imagen está incrustada en base64 (texto) para que todo siga en UN solo archivo.
+           alt describe la foto para lectores de pantalla. -->
+      <img class="foto" alt="Retrato de D’Alessandro Bazan H., con camisa blanca y corbata azul" width="190" src="data:image/jpeg;base64,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">
+    </div>
+  </header>
+
+  <!-- 9. MENÚ: los href="#id" saltan a la sección que tenga ese id -->
+  <nav class="menu" aria-label="Secciones">
+    <ul>
+      <li><a href="#experiencia">Experiencia</a></li>
+      <li><a href="#investigacion">Investigación</a></li>
+      <li><a href="#distinciones">Distinciones</a></li>
+      <li><a href="#competencias">Competencias</a></li>
+      <li><a href="#formacion">Formación</a></li>
+    </ul>
+  </nav>
+
+  <main class="contenedor">
+
+    <section id="experiencia">
+      <h2>Experiencia laboral</h2>
+      <ol class="tiempo">
+        <li>
+          <h3 class="puesto">Practicante preprofesional, Área Legal y de Permisos</h3>
+          <p class="lugar">Gestiona Consultores</p>
+          <p class="fecha">Agosto 2026 a la actualidad</p>
+          <ul class="lista">
+            <li>Revisión y actualización de IGA (EIA-d, EIA-sd y MEIA-d) para proyectos minero-energéticos.</li>
+            <li>Análisis de licitaciones y propuestas de consultoras ambientales.</li>
+            <li>Revisión de contratos de consultoría y de la normativa sectorial y ambiental aplicable.</li>
+            <li>Seguimiento de expedientes ante las entidades competentes (marco SEIA y SENACE).</li>
+          </ul>
+        </li>
+        <li>
+          <h3 class="puesto">Asistente administrativo, Unidad de Gestión de Recursos Humanos</h3>
+          <p class="lugar">Municipalidad de Villa María del Triunfo</p>
+          <p class="fecha">Junio 2025 a junio 2026</p>
+          <ul class="lista">
+            <li>Informes técnico-legales y análisis normativo para la defensa institucional en procedimientos administrativos y judiciales.</li>
+            <li>Estrategias de argumentación jurídica en materia laboral y administrativa.</li>
+            <li>Análisis de los regímenes laborales CAS, D. Leg. N.° 728 y D. Leg. N.° 276.</li>
+            <li>Sistematización de expedientes para agilizar la respuesta ante contingencias legales.</li>
+          </ul>
+        </li>
+        <li>
+          <h3 class="puesto">Asistente legal</h3>
+          <p class="lugar">Estudio Jurídico Camasca</p>
+          <p class="fecha">Marzo a agosto 2023</p>
+          <ul class="lista">
+            <li>Diligenciamiento de oficios y partes judiciales ante RENIEC, SUNARP y municipalidades.</li>
+            <li>Elaboración y presentación de escritos de demanda y denuncia por SINOE y el Ministerio Público.</li>
+            <li>Control documental de expedientes para evitar el vencimiento de plazos.</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section id="investigacion">
+      <h2>Investigación y publicaciones</h2>
+
+      <article class="pub">
+        <span class="estado publicado">Publicado, 2026</span>
+        <h3>Tutela judicial ambiental en la ejecución de mandatos estructurales en materia ambiental de sentencias nacionales y supranacionales en el Perú</h3>
+        <p>Revista Jurídica Ibero, Universidad Iberoamericana de México. Coautoría con Andrés Dulanto Tello y Helmut Olivera Torres, sobre acceso a la justicia ambiental y ejecución de sentencias estructurales de la Corte Interamericana de Derechos Humanos.</p>
+        <p><a href="https://juridica.ibero.mx/index.php/juridi/article/view/302" target="_blank" rel="noopener">Ver artículo</a></p>
+      </article>
+
+      <article class="pub">
+        <span class="estado publicado">Publicado, 2024</span>
+        <h3>Libertad de expresión vs. redes sociales: ¿cuándo son sancionables las publicaciones de los trabajadores en redes sociales?</h3>
+        <p>Revista Soluciones Laborales, Gaceta Jurídica. Análisis de la libertad de expresión frente a la reputación corporativa.</p>
+      </article>
+
+      <article class="pub">
+        <span class="estado proceso">En elaboración, 2026</span>
+        <h3>La eficacia de la tutela ambiental en la regulación de la pequeña minería: un análisis cualitativo comparado entre el REINFO (Perú) y el modelo ENAMI (Chile)</h3>
+        <p>Evaluación del cumplimiento normativo y la viabilidad ambiental en el sector extractivo.</p>
+      </article>
+
+      <article class="pub">
+        <span class="estado proceso">En elaboración, 2026</span>
+        <h3>De la formalización fallida al daño masivo: la exclusión de responsabilidad del REINFO y la insuficiencia de la visión antropocéntrica frente al ecocidio</h3>
+        <p>Para el Libro de Memorias del II Congreso Nacional e Internacional de Derecho Ambiental.</p>
+      </article>
+
+      <article class="pub">
+        <span class="estado proceso">En elaboración, 2026</span>
+        <h3>Las leyes blandas y los humedales costeros peruanos: un análisis regional</h3>
+        <p>Coautoría con Lorena Cordero y Héctor Aponte, sobre gobernanza ambiental y desprotección normativa de los humedales costeros.</p>
+      </article>
+
+      <h3>Clínica de Litigación Ambiental Científica (2025)</h3>
+      <ul class="lista">
+        <li>Unidad de Investigación Jurídica: protección forestal, biodiversidad y gobernanza ambiental.</li>
+        <li>Elaboración de informes técnicos y análisis normativos.</li>
+        <li>Participación en un amicus curiae contra la Ley N.° 31973.</li>
+      </ul>
+    </section>
+
+    <section id="distinciones">
+      <h2>Distinciones académicas</h2>
+      <ul class="lista">
+        <li>Representante de la Universidad Científica del Sur en el VII Concurso Internacional de Estudiantes de Derecho de la Red Iberoamericana de Facultades y Escuelas de Derecho (Santiago de Chile).</li>
+        <li>Miembro titular de la Mesa N.° 5, Bloque Constitucional y Ambiental, en el I Coloquio de Derecho Ambiental de Estudiantes de Perú.</li>
+        <li>Miembro del Taller de Derecho Ambiental de la Universidad Nacional Mayor de San Marcos (2026).</li>
+        <li>Participante en el 25.° Taller de Derecho Ambiental de la Sociedad Peruana de Derecho Ambiental.</li>
+        <li>Asistente de Cátedra de Derecho Laboral General (2025-I) y de Derecho Procesal Laboral (2025-II).</li>
+        <li>Participación en el Desafío Arbitral, 8.ª edición, Universidad Católica de San Pablo (2024-I).</li>
+      </ul>
+    </section>
+
+    <section id="competencias">
+      <h2>Competencias</h2>
+      <div class="grid">
+        <article><h3>Permisología y cumplimiento ambiental</h3><p>Revisión de EIA-d, EIA-sd y MEIA-d y seguimiento de expedientes ante autoridades ambientales.</p></article>
+        <article><h3>Redacción técnico-legal</h3><p>Informes técnicos y artículos académicos en materia ambiental, minera y laboral.</p></article>
+        <article><h3>Comunicación efectiva</h3><p>Representación institucional en coloquios y concursos de derecho.</p></article>
+        <article><h3>Trabajo en equipo</h3><p>Coautoría de artículos con equipos multidisciplinarios.</p></article>
+        <article><h3>Liderazgo y gestión</h3><p>Coordinación del apoyo docente y guía de grupos de estudiantes como asistente de cátedra.</p></article>
+        <article><h3>Gestión regulatoria</h3><p>Seguimiento procesal, análisis normativo y trámite de procedimientos administrativos sectoriales.</p></article>
+      </div>
+    </section>
+
+    <section id="formacion">
+      <h2>Formación y capacitaciones</h2>
+      <ul class="lista">
+        <li><strong>Derecho, Universidad Científica del Sur.</strong> Décimo ciclo, egreso estimado en diciembre de 2026.</li>
+        <li><strong>Inglés, Asociación Cultural Peruano Británica.</strong> Advanced 4, en curso (equivalente a B2 en la escala Cambridge).</li>
+        <li>Diplomado especializado en Derecho Minero, Colegio de Abogados de Huánuco y Portal Minero del Perú.</li>
+        <li>Webinar «El doble filo del Reinfo», organizado por la Clínica Jurídica de Energías Renovables de la PUCP y CMS Grau, entre otros (mayo 2026).</li>
+        <li>Evento «Cities, Climate Change &amp; Land Use», Academia de Derecho Climático de la Universidad Científica del Sur.</li>
+        <li>Ciclo de conferencias sobre el marco constitucional del procedimiento administrativo y la jurisprudencia del Tribunal Constitucional.</li>
+        <li>Cursos de SERVIR (ENAP): desplazamiento de servidores en los regímenes 276 y 728, y negociación colectiva.</li>
+        <li>Voluntario en el Programa Liderazgo Sostenible de Solidaritas Perú (2026 a la actualidad).</li>
+        <li>Herramientas: Office y Google Workspace, nivel intermedio.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div class="contenedor">D’Alessandro Bazan H. · Lima, Perú</div>
+  </footer>
+</body>
+</html>
